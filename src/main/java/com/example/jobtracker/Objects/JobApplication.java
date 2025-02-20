@@ -1,10 +1,84 @@
 package com.example.jobtracker.Objects;
 
-public class JobApplication
-{
-    private String companyName;
-    private String jobTitle;
-    private String status;
-    private String applicationDate;
-    private String notes;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
+
+public class JobApplication {
+    // Properties for each field
+    private final StringProperty companyName;
+    private final StringProperty jobTitle;
+    private final StringProperty status;
+    private final StringProperty applicationDate;
+    private final StringProperty notes;
+
+    // Constructor
+    public JobApplication(String companyName, String jobTitle, String status, String applicationDate, String notes) {
+        this.companyName = new SimpleStringProperty(companyName);
+        this.jobTitle = new SimpleStringProperty(jobTitle);
+        this.status = new SimpleStringProperty(status);
+        this.applicationDate = new SimpleStringProperty(applicationDate);
+        this.notes = new SimpleStringProperty(notes);
+    }
+
+    // Getters for properties
+    public StringProperty companyNameProperty() {
+        return companyName;
+    }
+
+    public StringProperty jobTitleProperty() {
+        return jobTitle;
+    }
+
+    public StringProperty statusProperty() {
+        return status;
+    }
+
+    public StringProperty applicationDateProperty() {
+        return applicationDate;
+    }
+
+    public StringProperty notesProperty() {
+        return notes;
+    }
+
+    // Regular getters and setters
+    public String getCompanyName() {
+        return companyName.get();
+    }
+
+    public void setCompanyName(String companyName) {
+        this.companyName.set(companyName);
+    }
+
+    public String getJobTitle() {
+        return jobTitle.get();
+    }
+
+    public void setJobTitle(String jobTitle) {
+        this.jobTitle.set(jobTitle);
+    }
+
+    public String getStatus() {
+        return status.get();
+    }
+
+    public void setStatus(String status) {
+        this.status.set(status);
+    }
+
+    public String getApplicationDate() {
+        return applicationDate.get();
+    }
+
+    public void setApplicationDate(String applicationDate) {
+        this.applicationDate.set(applicationDate);
+    }
+
+    public String getNotes() {
+        return notes.get();
+    }
+
+    public void setNotes(String notes) {
+        this.notes.set(notes);
+    }
 }

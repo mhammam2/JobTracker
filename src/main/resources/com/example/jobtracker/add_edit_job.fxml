@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane prefHeight="402.0" prefWidth="321.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.jobtracker.AddEditJobController">
+   <children>
+      <VBox prefHeight="186.0" prefWidth="213.0" spacing="15.0" AnchorPane.leftAnchor="50.0" AnchorPane.topAnchor="30.0">
+         <children>
+            <VBox prefHeight="200.0" prefWidth="100.0">
+               <children>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Company Name" wrappingWidth="136.6708984375" />
+                  <TextField fx:id="companyField" prefHeight="31.0" prefWidth="168.0" promptText="Enter Company Name" />
+               </children>
+               <VBox.margin>
+                  <Insets />
+               </VBox.margin>
+            </VBox>
+            <VBox prefHeight="200.0" prefWidth="100.0">
+               <children>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Job Title" wrappingWidth="136.6708984375" />
+                  <TextField fx:id="jobTitleField" prefHeight="31.0" prefWidth="187.0" promptText="Enter Job Title" />
+               </children>
+            </VBox>
+            <VBox prefHeight="200.0" prefWidth="100.0">
+               <children>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Status" wrappingWidth="136.6708984375" />
+                  <TextField fx:id="statusField" promptText="Enter Status" />
+               </children>
+            </VBox>
+            <VBox prefHeight="200.0" prefWidth="100.0">
+               <children>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Application Date" />
+                  <TextField fx:id="dateField" promptText="Enter Date" />
+               </children>
+            </VBox>
+            <VBox prefHeight="200.0" prefWidth="100.0">
+               <children>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Notes" />
+                  <TextField fx:id="notesField" promptText="Enter notes" />
+               </children>
+            </VBox>
+            <Button fx:id="saveButton" mnemonicParsing="false" text="Save" />
+         </children>
+      </VBox>
+   </children>
+</AnchorPane>

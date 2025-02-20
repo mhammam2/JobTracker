@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import javafx.geometry.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox spacing="10" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.jobtracker.MainController">
+    <padding>
+        <Insets bottom="10" left="10" right="10" top="10" />
+    </padding>
+   <children>
+       <Label style="-fx-font-size: 20px; -fx-font-weight: bold;" text="Job Application Tracker" />
+       <TableView fx:id="jobTable">
+           <columns>
+               <TableColumn fx:id="companyNameColumn" text="Company Name" />
+               <TableColumn fx:id="jobTitleColumn" text="Job Title" />
+               <TableColumn fx:id="statusColumn" text="Status" />
+               <TableColumn fx:id="dateColumn" text="Date" />
+               <TableColumn fx:id="notesColumn" text="Notes" />
+           </columns>
+       </TableView>
+       <HBox spacing="10">
+          <children>
+              <Button fx:id="addButton" onAction="#handleAddButton" text="Add" />
+              <Button fx:id="editButton" onAction="#handleEditButton" text="Edit" />
+              <Button fx:id="deleteButton" onAction="#handleDeleteButton" text="Delete" />
+            <Button mnemonicParsing="false" onAction="#fetchJobApplicationsAndDisplay" text="Fetch From Email" />
+          </children>
+       </HBox>
+   </children>
+</VBox>

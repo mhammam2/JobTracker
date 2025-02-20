@@ -15,6 +15,8 @@ module com.example.jobtracker {
     requires java.datatransfer;
     requires com.microsoft.graph.core;
     requires java.sql;
+    requires org.apache.poi.poi;
+    requires org.apache.poi.ooxml;
 
     opens com.example.jobtracker to javafx.fxml;
     exports com.example.jobtracker;

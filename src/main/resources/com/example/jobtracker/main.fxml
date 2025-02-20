@@ -6,7 +6,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<VBox spacing="10" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.jobtracker.MainController">
+<VBox prefHeight="544.0" prefWidth="612.0" spacing="10" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.jobtracker.MainController">
     <padding>
         <Insets bottom="10" left="10" right="10" top="10" />
     </padding>
@@ -14,11 +14,11 @@
        <Label style="-fx-font-size: 20px; -fx-font-weight: bold;" text="Job Application Tracker" />
        <TableView fx:id="jobTable">
            <columns>
-               <TableColumn fx:id="companyNameColumn" text="Company Name" />
-               <TableColumn fx:id="jobTitleColumn" text="Job Title" />
-               <TableColumn fx:id="statusColumn" text="Status" />
-               <TableColumn fx:id="dateColumn" text="Date" />
-               <TableColumn fx:id="notesColumn" text="Notes" />
+               <TableColumn fx:id="companyNameColumn" prefWidth="135.0" text="Company Name" />
+               <TableColumn fx:id="jobTitleColumn" prefWidth="125.0" text="Job Title" />
+               <TableColumn fx:id="statusColumn" prefWidth="104.0" text="Status" />
+               <TableColumn fx:id="dateColumn" prefWidth="111.0" text="Date" />
+               <TableColumn fx:id="notesColumn" prefWidth="116.0" text="Notes" />
            </columns>
        </TableView>
        <HBox spacing="10">
@@ -26,6 +26,7 @@
               <Button fx:id="addButton" onAction="#handleAddButton" text="Add" />
               <Button fx:id="editButton" onAction="#handleEditButton" text="Edit" />
               <Button fx:id="deleteButton" onAction="#handleDeleteButton" text="Delete" />
+            <Button mnemonicParsing="false" onAction="#handleImportExcel" text="Import from Excel" />
           </children>
        </HBox>
    </children>

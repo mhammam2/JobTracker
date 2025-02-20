@@ -1,6 +1,6 @@
 package com.example.jobtracker;
 
-import com.example.jobtracker.MainController;
+
 import com.example.jobtracker.Objects.JobApplication;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
@@ -55,14 +55,14 @@ public class AddEditJobController {
         saveButton.setOnAction(e -> handleSave());
     }
 
-    private void handleSave() {
+    public void handleSave() {
         String company = companyField.getText();
         String jobTitle = jobTitleField.getText();
         String status = statusComboBox.getValue(); // Get selected status
         LocalDate date = datePicker.getValue();      // Get selected date
         String notes = notesField.getText();
 
-        // Validate required fields.
+        // Validate required fields
         if (company.isEmpty() || jobTitle.isEmpty() || status == null || date == null) {
             Alert alert = new Alert(Alert.AlertType.WARNING,
                     "Please fill in all required fields!",
@@ -74,7 +74,13 @@ public class AddEditJobController {
         // Format the date as a string if needed (ISO format is default).
         String dateString = date.toString();
 
+        // If editing, ensure the ID is passed correctly
         if (isEditing) {
+            JobApplication updatedJob = new JobApplication(company, jobTitle, status, dateString, notes);
+            updatedJob.setId(jobApplication.getId()); // Ensure ID is set before updating
+            mainController.updateJobInDatabase(updatedJob, updatedJob.getId());
+
+            // Update the local object after successfully saving to the DB
             jobApplication.setCompanyName(company);
             jobApplication.setJobTitle(jobTitle);
             jobApplication.setStatus(status);
@@ -87,6 +93,8 @@ public class AddEditJobController {
 
         closeWindow();
     }
+
+
 
     @FXML
     private void handleCancel() {

@@ -14,10 +14,9 @@ module com.example.jobtracker {
     requires org.json;
     requires java.datatransfer;
     requires com.microsoft.graph.core;
+    requires java.sql;
 
     opens com.example.jobtracker to javafx.fxml;
     exports com.example.jobtracker;
-    exports com.example.jobtracker.email;
-    opens com.example.jobtracker.email to javafx.fxml;
 
 }

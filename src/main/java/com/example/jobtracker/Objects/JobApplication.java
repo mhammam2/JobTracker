@@ -3,9 +3,13 @@ package com.example.jobtracker.Objects;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+
 public class JobApplication {
     // Properties for each field
     private final StringProperty companyName;
+    private long id;
     private final StringProperty jobTitle;
     private final StringProperty status;
     private final StringProperty applicationDate;
@@ -20,6 +24,13 @@ public class JobApplication {
         this.notes = new SimpleStringProperty(notes);
     }
 
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
     // Getters for properties
     public StringProperty companyNameProperty() {
         return companyName;
@@ -80,5 +91,10 @@ public class JobApplication {
 
     public void setNotes(String notes) {
         this.notes.set(notes);
+    }
+
+    public LocalDate getApplicationDateAsLocalDate() {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd"); // Adjust to your date format
+        return LocalDate.parse(getApplicationDate(), formatter);
     }
 }

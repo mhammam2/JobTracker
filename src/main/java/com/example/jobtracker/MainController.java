@@ -34,7 +34,6 @@ public class MainController {
         notesColumn.setCellValueFactory(cellData -> cellData.getValue().notesProperty());
 
         // Add sample data
-        jobApplications.add(new JobApplication("Company A", "Software Engineer", "Applied", "2023-10-01", "Waiting for response"));
         jobTable.setItems(jobApplications);
     }
 
@@ -43,19 +42,6 @@ public class MainController {
         openJobDialog(null);
     }
 
-    @FXML
-    private void fetchJobApplicationsAndDisplay() throws Exception
-    {
-        EmailFetcher emailFetcher = new EmailFetcher();
-        // Fetch job applications from the email account
-        List<JobApplication> fetchedJobs = emailFetcher.fetchJobApplications();
-
-        // Add the fetched jobs to the ObservableList
-        jobApplications.addAll(fetchedJobs);
-
-        // Set the ObservableList to the TableView
-        jobTable.setItems(jobApplications);
-    }
 
     @FXML
     private void handleEditButton() {

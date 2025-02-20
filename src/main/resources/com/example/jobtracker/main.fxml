@@ -26,7 +26,6 @@
               <Button fx:id="addButton" onAction="#handleAddButton" text="Add" />
               <Button fx:id="editButton" onAction="#handleEditButton" text="Edit" />
               <Button fx:id="deleteButton" onAction="#handleDeleteButton" text="Delete" />
-            <Button mnemonicParsing="false" onAction="#fetchJobApplicationsAndDisplay" text="Fetch From Email" />
           </children>
        </HBox>
    </children>

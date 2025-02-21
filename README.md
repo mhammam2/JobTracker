@@ -1,4 +1,6 @@
 # Job Tracker
+## Overview
+This is a personal project developed to help track internship applications. It allows you to keep a record of all your applications, including the company name, job title, application status, application date, and additional notes. The main goal of the application is to help you stay organized, follow up on applications, and track the number of internships you have applied for.
 ## Features
 - **Track Internship Applications**: Store information about each application, including:
   - Company Name

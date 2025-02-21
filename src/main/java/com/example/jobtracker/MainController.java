@@ -117,6 +117,15 @@ public class MainController {
 
     }
 
+    public void refresh()
+    {
+        setFollowUpStatus();
+        checkForExpiredJobs();
+        calculateAverageApplicationsPerDay();
+        setPieChart();
+    }
+
+
     private void setPieChart()
     {
         int Pending=0;
@@ -405,6 +414,7 @@ public class MainController {
             e.printStackTrace();
             showAlert("Error", "Error while updating the job application.");
         }
+        refresh();
     }
 
 
@@ -447,7 +457,7 @@ public class MainController {
             e.printStackTrace();
             showAlert("Error", "Error while inserting the job application.");
         }
-        calculateAverageApplicationsPerDay();
+        refresh();
     }
 
     @FXML
@@ -486,6 +496,6 @@ public class MainController {
         } else {
             showAlert("No Selection", "Please select a job application to delete.");
         }
-        calculateAverageApplicationsPerDay();
+        refresh();
     }
 }

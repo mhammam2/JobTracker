@@ -1,33 +1,66 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.chart.*?>
 <?import java.lang.*?>
 <?import javafx.geometry.*?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<VBox prefHeight="544.0" prefWidth="612.0" spacing="10" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.jobtracker.MainController">
+<VBox prefHeight="662.0" prefWidth="953.0" spacing="10" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.jobtracker.MainController">
     <padding>
         <Insets bottom="10" left="10" right="10" top="10" />
     </padding>
-   <children>
-       <Label style="-fx-font-size: 20px; -fx-font-weight: bold;" text="Job Application Tracker" />
-       <TableView fx:id="jobTable">
-           <columns>
-               <TableColumn fx:id="companyNameColumn" prefWidth="135.0" text="Company Name" />
-               <TableColumn fx:id="jobTitleColumn" prefWidth="125.0" text="Job Title" />
-               <TableColumn fx:id="statusColumn" prefWidth="104.0" text="Status" />
-               <TableColumn fx:id="dateColumn" prefWidth="111.0" text="Date" />
-               <TableColumn fx:id="notesColumn" prefWidth="116.0" text="Notes" />
-           </columns>
-       </TableView>
-       <HBox spacing="10">
-          <children>
-              <Button fx:id="addButton" onAction="#handleAddButton" text="Add" />
-              <Button fx:id="editButton" onAction="#handleEditButton" text="Edit" />
-              <Button fx:id="deleteButton" onAction="#handleDeleteButton" text="Delete" />
-            <Button mnemonicParsing="false" onAction="#handleImportExcel" text="Import from Excel" />
-          </children>
-       </HBox>
-   </children>
+    <children>
+        <Label style="-fx-font-size: 20px; -fx-font-weight: bold;" text="Job Application Tracker" />
+
+        <!-- Application Monitor Section -->
+        <HBox alignment="CENTER" spacing="20">
+            <children>
+                <PieChart fx:id="Pie" prefHeight="116.0" prefWidth="144.0" />
+                <VBox alignment="CENTER_LEFT" spacing="5">
+                    <children>
+                        <Label text="Total Applications:" />
+                        <Label fx:id="totalApplicationsLabel" style="-fx-font-size: 16px; -fx-font-weight: bold;" text="0" />
+                    </children>
+                </VBox>
+
+                <VBox alignment="CENTER_LEFT" spacing="5">
+                    <children>
+                        <Label text="Applications Per Day:" />
+                        <Label fx:id="applicationsPerDayLabel" style="-fx-font-size: 16px; -fx-font-weight: bold;" text="0.0" />
+                    </children>
+                </VBox>
+
+                <VBox alignment="CENTER_LEFT" spacing="5">
+                    <children>
+                        <Label text="Status:" />
+                        <Label fx:id="statusLabel" style="-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: gray;" text="Pending" />
+                    </children>
+                </VBox>
+            </children>
+        </HBox>
+
+        <!-- Job Applications Table -->
+        <TableView fx:id="jobTable">
+            <columns>
+                <TableColumn fx:id="companyNameColumn" prefWidth="135.0" text="Company Name" />
+                <TableColumn fx:id="jobTitleColumn" prefWidth="125.0" text="Job Title" />
+                <TableColumn fx:id="statusColumn" prefWidth="104.0" text="Status" />
+                <TableColumn fx:id="dateColumn" prefWidth="111.0" text="Date" />
+                <TableColumn fx:id="notesColumn" prefWidth="116.0" text="Notes" />
+                <TableColumn fx:id="followUpDateColumn" prefWidth="124.0" text="Follow Up Date" />
+            <TableColumn fx:id="selectedColumn" prefWidth="118.0" text="Followed Up " />
+            </columns>
+        </TableView>
+
+        <HBox spacing="10">
+            <children>
+                <Button fx:id="addButton" onAction="#handleAddButton" text="Add" />
+                <Button fx:id="editButton" onAction="#handleEditButton" text="Edit" />
+                <Button fx:id="deleteButton" onAction="#handleDeleteButton" text="Delete" />
+                <Button mnemonicParsing="false" onAction="#handleImportExcel" text="Import from Excel" />
+            </children>
+        </HBox>
+    </children>
 </VBox>

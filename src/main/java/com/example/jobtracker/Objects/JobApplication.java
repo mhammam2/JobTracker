@@ -1,5 +1,7 @@
 package com.example.jobtracker.Objects;
 
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
@@ -14,6 +16,8 @@ public class JobApplication {
     private final StringProperty status;
     private final StringProperty applicationDate;
     private final StringProperty notes;
+    private String followUp;
+    private final BooleanProperty followedUp = new SimpleBooleanProperty();
 
     // Constructor
     public JobApplication(String companyName, String jobTitle, String status, String applicationDate, String notes) {
@@ -22,6 +26,7 @@ public class JobApplication {
         this.status = new SimpleStringProperty(status);
         this.applicationDate = new SimpleStringProperty(applicationDate);
         this.notes = new SimpleStringProperty(notes);
+        calculateFollowUpDate();
     }
 
     public long getId() {
@@ -96,5 +101,31 @@ public class JobApplication {
     public LocalDate getApplicationDateAsLocalDate() {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd"); // Adjust to your date format
         return LocalDate.parse(getApplicationDate(), formatter);
+    }
+
+    public void calculateFollowUpDate() {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDate appDate = LocalDate.parse(this.applicationDate.get(), formatter);
+        this.followUp = appDate.plusDays(15).toString();
+    }
+
+    public String getFollowUpDate() {
+        return followUp;
+    }
+
+    public void setFollowUpDate(String followUpDate) {
+        this.followUp = followUpDate;
+    }
+
+    public boolean isSelected() {
+        return followedUp.get();
+    }
+
+    public void setSelected(boolean selected) {
+        this.followedUp.set(selected);
+    }
+
+    public BooleanProperty selectedProperty() {
+        return followedUp;
     }
 }

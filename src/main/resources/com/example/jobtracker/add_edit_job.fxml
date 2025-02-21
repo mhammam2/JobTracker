@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.collections.*?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.text.*?>
 <?import java.lang.*?>
@@ -7,11 +8,11 @@
 <?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-
 <?import javafx.collections.FXCollections?>
-<AnchorPane prefHeight="402.0" prefWidth="321.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.jobtracker.AddEditJobController">
+
+<AnchorPane prefHeight="505.0" prefWidth="320.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.jobtracker.AddEditJobController">
    <children>
-      <VBox prefHeight="186.0" prefWidth="213.0" spacing="15.0" AnchorPane.leftAnchor="50.0" AnchorPane.topAnchor="30.0">
+      <VBox layoutX="54.0" layoutY="60.0" prefHeight="186.0" prefWidth="213.0" spacing="15.0" AnchorPane.leftAnchor="54.0" AnchorPane.topAnchor="60.0">
          <children>
             <VBox prefHeight="200.0" prefWidth="100.0">
                <children>
@@ -31,7 +32,7 @@
             <VBox prefHeight="200.0" prefWidth="100.0">
                <children>
                   <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Status" wrappingWidth="136.6708984375" />
-                  <ComboBox fx:id="statusComboBox" promptText="Select Status" prefWidth="168.0">
+                  <ComboBox fx:id="statusComboBox" prefWidth="168.0" promptText="Select Status">
                      <items>
                         <FXCollections fx:factory="observableArrayList">
                            <String fx:value="Pending" />
@@ -47,7 +48,7 @@
             <VBox prefHeight="200.0" prefWidth="100.0">
                <children>
                   <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Application Date" />
-                  <DatePicker fx:id="datePicker" promptText="Select Date" prefWidth="168.0" />
+                  <DatePicker fx:id="datePicker" prefWidth="168.0" promptText="Select Date" />
                </children>
             </VBox>
             <VBox prefHeight="200.0" prefWidth="100.0">
@@ -56,6 +57,7 @@
                   <TextField fx:id="notesField" promptText="Enter notes" />
                </children>
             </VBox>
+            <CheckBox fx:id="followedUpCheckBox" mnemonicParsing="false" text="Followed Up" />
             <Button fx:id="saveButton" mnemonicParsing="false" text="Save" />
          </children>
       </VBox>

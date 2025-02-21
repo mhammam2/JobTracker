@@ -3,11 +3,7 @@ package com.example.jobtracker;
 
 import com.example.jobtracker.Objects.JobApplication;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.DatePicker;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.stage.Stage;
 import java.time.LocalDate;
 
@@ -21,6 +17,7 @@ public class AddEditJobController {
     @FXML private DatePicker datePicker;
     @FXML private TextField notesField;
     @FXML private Button saveButton;
+    @FXML private CheckBox followedUpCheckBox;
 
     private JobApplication jobApplication;  // Existing job if editing
     private boolean isEditing = false;
@@ -38,6 +35,7 @@ public class AddEditJobController {
             jobTitleField.setText(job.getJobTitle());
             // Set the status in the ComboBox.
             statusComboBox.setValue(job.getStatus());
+
             // Assuming the job application date is in ISO format (yyyy-MM-dd)
             try {
                 datePicker.setValue(LocalDate.parse(job.getApplicationDate()));
@@ -45,6 +43,7 @@ public class AddEditJobController {
                 datePicker.setValue(null);
             }
             notesField.setText(job.getNotes());
+            followedUpCheckBox.setSelected(job.isSelected());
         }
     }
 
@@ -61,6 +60,7 @@ public class AddEditJobController {
         String status = statusComboBox.getValue(); // Get selected status
         LocalDate date = datePicker.getValue();      // Get selected date
         String notes = notesField.getText();
+        Boolean followedUp = followedUpCheckBox.isSelected();
 
         // Validate required fields
         if (company.isEmpty() || jobTitle.isEmpty() || status == null || date == null) {
@@ -78,6 +78,7 @@ public class AddEditJobController {
         if (isEditing) {
             JobApplication updatedJob = new JobApplication(company, jobTitle, status, dateString, notes);
             updatedJob.setId(jobApplication.getId()); // Ensure ID is set before updating
+            updatedJob.setSelected(followedUp);
             mainController.updateJobInDatabase(updatedJob, updatedJob.getId());
 
             // Update the local object after successfully saving to the DB
@@ -86,6 +87,7 @@ public class AddEditJobController {
             jobApplication.setStatus(status);
             jobApplication.setApplicationDate(dateString);
             jobApplication.setNotes(notes);
+            jobApplication.setSelected(followedUp);
         } else {
             JobApplication newJob = new JobApplication(company, jobTitle, status, dateString, notes);
             mainController.addJobApplication(newJob);

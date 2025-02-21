@@ -1,13 +1,16 @@
 package com.example.jobtracker;
 
 import com.example.jobtracker.Objects.JobApplication;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.chart.PieChart;
 import javafx.scene.control.*;
 import javafx.collections.ObservableList;
 import javafx.collections.FXCollections;
+import javafx.scene.control.cell.CheckBoxTableCell;
 import javafx.stage.Stage;
 import javafx.stage.FileChooser;
 import org.apache.poi.ss.usermodel.*;
@@ -30,8 +33,16 @@ public class MainController {
     @FXML private TableColumn<JobApplication, String> statusColumn;
     @FXML private TableColumn<JobApplication, String> dateColumn;
     @FXML private TableColumn<JobApplication, String> notesColumn;
+    @FXML private TableColumn<JobApplication, String> followUpDateColumn;
+
+    @FXML private Label totalApplicationsLabel;
+    @FXML private Label applicationsPerDayLabel;
+    @FXML private Label statusLabel;
+    @FXML private PieChart Pie;
+    @FXML private TableColumn<JobApplication, Boolean> selectedColumn;
 
     private ObservableList<JobApplication> jobApplications = FXCollections.observableArrayList();
+
 
     @FXML
     public void initialize() {
@@ -41,6 +52,16 @@ public class MainController {
         statusColumn.setCellValueFactory(cellData -> cellData.getValue().statusProperty());
         dateColumn.setCellValueFactory(cellData -> cellData.getValue().applicationDateProperty());
         notesColumn.setCellValueFactory(cellData -> cellData.getValue().notesProperty());
+        followUpDateColumn.setCellValueFactory(cellData -> {
+            JobApplication job = cellData.getValue();
+            return new SimpleStringProperty(job.getFollowUpDate()); // Get calculated follow-up date
+        });
+
+        selectedColumn.setCellValueFactory(cellData -> cellData.getValue().selectedProperty());
+
+        selectedColumn.setCellFactory(CheckBoxTableCell.forTableColumn(selectedColumn));
+
+        jobTable.setItems(jobApplications);
 
         statusColumn.setCellFactory(column -> {
             return new TableCell<JobApplication, String>() {
@@ -66,6 +87,15 @@ public class MainController {
                             case "Expired":
                                 setStyle("-fx-background-color: red;");
                                 break;
+                            case "Follow up today":
+                                setStyle("-fx-background-color: green");
+                                break;
+                            case "Follow up tomorrow":
+                                setStyle("-fx-background-color: green");
+                                break;
+                            case "Follow up overdue":
+                                setStyle("-fx-background-color: orange");
+                                break;
                             default:
                                 setStyle("");  // Default style if no match
                                 break;
@@ -77,8 +107,131 @@ public class MainController {
 
         DatabaseManager.initializeDatabase();
         loadJobs();  // Load jobs from the database
+        setFollowUpStatus();
         checkForExpiredJobs();
+        calculateAverageApplicationsPerDay();
+        setPieChart();
+        selectedColumn.setCellValueFactory(cellData -> cellData.getValue().selectedProperty());
+        selectedColumn.setCellFactory(CheckBoxTableCell.forTableColumn(selectedColumn));
         jobTable.setItems(jobApplications);
+
+    }
+
+    private void setPieChart()
+    {
+        int Pending=0;
+        int Expired=0;
+        int Accepted=0;
+        int Assessment=0;
+
+        for(JobApplication job : jobApplications)
+        {
+            if(job.getStatus().equals("Pending"))
+            {
+                Pending++;
+            }
+            else if(job.getStatus().equals("Expired"))
+            {
+                Expired++;
+            }
+            else if(job.getStatus().equals("Accepted"))
+            {
+                Accepted++;
+            }
+        }
+
+        ObservableList<PieChart.Data> pieChartData = FXCollections.observableArrayList(
+                new PieChart.Data("Pending", Pending),
+                new PieChart.Data("Expired", Expired),
+                new PieChart.Data("Accepted", Accepted)
+        );
+        Pie.setData(pieChartData);
+        for (PieChart.Data data : pieChartData) {
+            switch (data.getName()) {
+                case "Pending":
+                    data.getNode().setStyle("-fx-pie-color: yellow;"); // Orange
+                    break;
+                case "Expired":
+                    data.getNode().setStyle("-fx-pie-color: red;"); // Tomato
+                    break;
+                case "Accepted":
+                    data.getNode().setStyle("-fx-pie-color: green;"); // LimeGreen
+                    break;
+            }
+        }
+    }
+
+    private void setFollowUpStatus() {
+        LocalDate today = LocalDate.now();  // Get today's date
+
+        for (JobApplication jobs : jobApplications) {
+            LocalDate followUpDate = null;
+            try {
+                followUpDate = LocalDate.parse(jobs.getFollowUpDate());  // Parse the follow-up date
+            } catch (Exception e) {
+                // Handle missing follow-up date if needed
+            }
+
+            LocalDate applicationDate = jobs.getApplicationDateAsLocalDate();  // Get the application date
+
+            // Check if follow-up date is set
+            if (followUpDate != null) {
+                // If the follow-up date is today
+                if(jobs.isSelected())
+                {
+                    jobs.setStatus("Pending");
+                }
+                else if (followUpDate.isEqual(today) && !jobs.isSelected()) {
+                    jobs.setStatus("Follow up today");
+                }
+                // If the follow-up date is tomorrow
+                else if (followUpDate.isEqual(today.plusDays(1)) && !jobs.isSelected()) {
+                    jobs.setStatus("Follow up tomorrow");
+                }
+                else if (followUpDate.isBefore(today)) {
+                    jobs.setStatus("Follow up overdue");
+                }
+            }
+        }
+    }
+
+
+    private void calculateAverageApplicationsPerDay() {
+        if (jobApplications.isEmpty()) {
+            System.out.println("No job applications to calculate.");
+            return;
+        }
+
+        // Find the earliest application date
+        LocalDate earliestDate = jobApplications.stream()
+                .map(JobApplication::getApplicationDateAsLocalDate)
+                .min(LocalDate::compareTo)
+                .orElse(LocalDate.now());
+
+        LocalDate currentDate = LocalDate.now();
+        long totalDays = ChronoUnit.DAYS.between(earliestDate, currentDate) + 1; // Add 1 to include today
+
+        // Avoid division by zero
+        if (totalDays == 0) {
+            totalDays = 1;
+        }
+
+        double applicationsPerDay = (double) jobApplications.size() / totalDays;
+        int totalApplications = jobApplications.size();
+
+        totalApplicationsLabel.setText(String.valueOf(totalApplications));
+        applicationsPerDayLabel.setText(String.format("%.2f", applicationsPerDay));
+
+        if (applicationsPerDay >= 5) {
+            statusLabel.setText("Good");
+            statusLabel.setStyle("-fx-text-fill: green;");
+        } else if (applicationsPerDay >= 3) {
+            statusLabel.setText("Average");
+            statusLabel.setStyle("-fx-text-fill: orange;");
+        } else {
+            statusLabel.setText("Bad");
+            statusLabel.setStyle("-fx-text-fill: red;");
+        }
     }
 
     @FXML
@@ -135,6 +288,7 @@ public class MainController {
                         rs.getString("notes")
                 );
                 job.setId(rs.getInt("id"));
+                job.setSelected(rs.getBoolean("followedUp"));
                 jobApplications.add(job);  // Add each job to the list
             }
         } catch (SQLException e) {
@@ -217,7 +371,7 @@ public class MainController {
 
 
     public void updateJobInDatabase(JobApplication job, long id) {
-        String updateQuery = "UPDATE JobApplications SET companyName = ?, jobTitle = ?, status = ?, applicationDate = ?, notes = ? WHERE id = ?";
+        String updateQuery = "UPDATE JobApplications SET companyName = ?, jobTitle = ?, status = ?, applicationDate = ?, notes = ?, followedUp = ? WHERE id = ?";
 
         try (Connection conn = DatabaseManager.getConnection();
              PreparedStatement stmt = conn.prepareStatement(updateQuery)) {
@@ -228,7 +382,8 @@ public class MainController {
             stmt.setString(3, job.getStatus());
             stmt.setString(4, job.getApplicationDate());
             stmt.setString(5, job.getNotes());
-            stmt.setLong(6, id);  // Use the ID for the update
+            stmt.setBoolean(6, job.isSelected());
+            stmt.setLong(7, id);  // Use the ID for the update
 
             // Print the id to debug
             System.out.println("Updating job with ID: " + id);
@@ -292,6 +447,7 @@ public class MainController {
             e.printStackTrace();
             showAlert("Error", "Error while inserting the job application.");
         }
+        calculateAverageApplicationsPerDay();
     }
 
     @FXML
@@ -330,5 +486,6 @@ public class MainController {
         } else {
             showAlert("No Selection", "Please select a job application to delete.");
         }
+        calculateAverageApplicationsPerDay();
     }
 }
